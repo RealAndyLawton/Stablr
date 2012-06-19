@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Turds</title>
+		<script src="jquery.js"></script>
+		<script>
+			function showNotification(body) {
+	var notification = webkitNotifications.createNotification(
+  		'icon-48.png',  // icon url - can be relative
+  		'Hello!',  // notification title
+  		body  // notification body text
+	);
+	
+	notification.show();
+	
+}
+
+function setAlarm() {
+
+	showNotification("Set the alarm dammit!");
+	var bp = chrome.extension.getBackgroundPage();
+	bp.setState(bp.AlarmState.SET);
+	
+
+}
+
+function cancelAlarm() {
+
+	showNotification("Cancel the alarm now");
+
+}
+
+function showState() {
+
+	var bgPage = chrome.extension.getBackgroundPage();
+	bgPage.showNotification("State: " + bgPage.getState());
+
+}
+
+$(document).ready(function() {
+
+	$("#setAlarm").click(function() {
+		setAlarm();
+	});
+	
+	$("#showState").click(function() {
+		showState();
+	});
+
+});
+
+
+		</script>
+	</head>
+	<body>
+		<input id="setAlarm" type="button" value="Set Alarm" />
+		<input id="cancelAlarm" type="button" value="Cancel Alarm" />
+		<input id="showState" type="button" value="Show State" />
+	</body>
+</html>
