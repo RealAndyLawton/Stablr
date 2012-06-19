@@ -4,6 +4,10 @@
 		<title>Turds</title>
 		<script src="jquery.js"></script>
 		<script>
+		
+		
+		var _bp = chrome.extension.getBackgroundPage();
+		
 			function showNotification(body) {
 	var notification = webkitNotifications.createNotification(
   		'icon-48.png',  // icon url - can be relative
@@ -17,9 +21,7 @@
 
 function setAlarm() {
 
-	showNotification("Set the alarm dammit!");
-	var bp = chrome.extension.getBackgroundPage();
-	bp.setState(bp.AlarmState.SET);
+	_bp.setState(_bp.AlarmState.SET);
 	
 
 }
