@@ -1,35 +1,67 @@
 // Listen for any changes to the URL of any tab.
-chrome.tabs.onUpdated.addListener(onHuluTabUpdated);
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+  	// If we have a Hulu tab, bootstrap the extension
+	if (tab.url.indexOf('hulu.com') > -1) {
+  		bootstrap(tabId);
+  	}
+});
 
-// Define our Alarm's possible states
+// Bootstrap!
+function bootstrap(tabId) {	
+	// Set the tab we're working with
+	setTab(tabId);  
+  
+    // Show the page
+    chrome.pageAction.show(tabId);
+    chrome.pageAction.setTitle({ "tabId": tabId, "title": "This is the tooltip.  Fill in later" });
+    chrome.pageAction.setPopup({ "tabId": tabId, "popup": "timer-set.html" });     
+}
+
+
+// Define our Timer's possible states
 // TODO Combine these using protoype, defineGetter or defineProperties
-var AlarmState = {"UNSET": 0, "SET": 1};
+var TimerState = {"UNSET": 0, "SET": 1, "CANCELLED": 2};
 var _state = 0;
 function setState(state) { _state = state; }
 function getState() { return _state; }
 
+var _time = 0;
+function setTime(time) { _time = time; }
+function getTime() { return _time; }
 
-// Called when the url of a tab changes.
-function onHuluTabUpdated(tabId, changeInfo, tab) {
-  // If we have a Hulu tab, do something
-  if (tab.url.indexOf('hulu.com') > -1) {
-    // ... show the page action.
-    chrome.pageAction.show(tabId);
-    chrome.pageAction.setTitle({ "tabId": tabId, "title": "This is the tooltip.  Fill in later" });
-    chrome.pageAction.setPopup({ "tabId": tabId, "popup": "first.html" });        
-  }
-};
+var _tab = 0;
+function setTab(tabId) { _tab = tabId; }
+function getTab() { return _tab; }
 
-// onClicked even only fired if popup isn't set
-chrome.pageAction.onClicked.addListener(function(tab) {
-	window.open("first.html");
-});
+var _timer = null;
+function setTimer(delay) {
+	_timer = setTimeout(dismissHulu, delay);
+}
+
+// Define common time intervals
+// TODO Remove debug constants
+var fiveSeconds = 5000
+var minute = 1000 * 60;
+var fiteen = minute * 15;
+var half = minute * 30;
+var hour = minute * 60;
+
+// Dismiss the timer and close the active Hulu tab
+function dismissHulu() {
+	// Tell user that we're about to close shop
+	showNotification("Closinnnnng time");
+	
+	// Close the tab
+	chrome.tabs.remove(getTab());
+	
+}
 
 
 function showNotification(body) {
+
 	var notification = webkitNotifications.createNotification(
-  		'icon-48.png',  // icon url - can be relative
-  		'Hello!',  // notification title
+  		'icon-48.png',
+  		'Stablr Says',  // notification title
   		body  // notification body text
 	);
 	
