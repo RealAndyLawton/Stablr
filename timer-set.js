@@ -1,12 +1,14 @@
-// Get reference to our 
+// Get reference to our background page
 var _bp = chrome.extension.getBackgroundPage();
 
 // Set our click handlers
 $(document).ready(function() {
 
 	$("#setAlarm").click(function() {
+	
 		_bp.setState(_bp.TimerState.SET);
-		_bp.setTimer(getAlarmLength());
+		_bp.setTimer($("#minutes").val());
+		
 	});
 	
 	$("#showState").click(function() {
@@ -14,14 +16,3 @@ $(document).ready(function() {
 	});
 
 });
-
-function getAlarmLength() {
-
-	var whole = $("#minutes").val();
-	
-	showNotification("Timer Length in minutes" + whole);
-	
-	return whole * _bp.minute;
-	
-}
-

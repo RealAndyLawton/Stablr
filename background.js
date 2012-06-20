@@ -35,7 +35,7 @@ function getTab() { return _tab; }
 
 var _timer = null;
 function setTimer(delay) {
-	_timer = setTimeout(dismissHulu, delay);
+	_timer = setTimeout(dismissHulu, delay * minute);
 }
 
 // Define common time intervals
