@@ -3,13 +3,13 @@
   "version": "1.0",
   "manifest_version": 1,
   "description": "Sleep timer for Hulu",
-  "background": { "scripts": ["background.js"] },
+  "background": { "scripts": ["stablr.js"] },
   "page_action" :
   {
     "default_icon" : "icon-19.png",
     "default_title" : "We Have Hulu!"
   },
   "permissions": [
-    "tabs", "notifications"
+    "tabs", "notifications", "*.twitter.com"
   ]
 }
